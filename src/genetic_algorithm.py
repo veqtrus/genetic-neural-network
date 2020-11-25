@@ -40,4 +40,4 @@ class GAOptimizer:
             new_population.append(child_a)
             new_population.append(child_b)
         self.population = new_population
-        return new_population
+        return new_population, fitnesses
