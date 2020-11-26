@@ -8,8 +8,8 @@ import genetic_algorithm as ga
 class GenAlgNN(ga.GAProblem):
     max_depth: int = 4
     max_width: int = 8
-    epochs: int = 2000
-    learning_rate: float = 0.05
+    epochs: int = 1000
+    learning_rate: float = 0.03
     prob_cross: float = 0.9
     prob_mut: float = 0.05
 
@@ -21,27 +21,23 @@ class GenAlgNN(ga.GAProblem):
         class PreprocessingLayer(keras.layers.Layer):
             def __init__(self):
                 super(PreprocessingLayer, self).__init__()
-            
-            def build(self, input_shape):
-                pass
 
             def call(self, inputs):
                 return tf.concat([
                     inputs,
                     tf.square(inputs),
-                    #tf.sin(inputs)
+                    tf.sin(inputs)
                 ], 1)
         
         model = keras.models.Sequential()
         model.add(PreprocessingLayer())
-        
         for w in x:
             if w > 1:
                 model.add(keras.layers.Dense(w, activation='tanh', kernel_regularizer=keras.regularizers.l2(l=0.01)))
         model.add(keras.layers.Dense(1, activation='tanh'))
         model.compile(loss='mse', optimizer=keras.optimizers.SGD(lr=self.learning_rate))
         X_train, y_train = self.training_set
-        model.fit(X_train, y_train, epochs=self.epochs, batch_size=16, verbose=0)
+        model.fit(X_train, y_train, epochs=self.epochs, batch_size=8, verbose=0)
         return model
 
     def fitness(self, x):
