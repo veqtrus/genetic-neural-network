@@ -14,5 +14,4 @@ $ pip install -r requirements.txt
 $ jupyter-lab
 ```
 
-And navigate to `src/notebook.ipnb`.
-
+And navigate to `src/notebook.ipynb`.
